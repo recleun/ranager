@@ -51,6 +51,13 @@ impl Buffer {
         }
     }
 
+    pub fn update_display(&self) {
+        self.clear_display();
+        for line in &self.lines {
+            println!("{}", line);
+        }
+    }
+
     fn clear_display(&self) {
         println!("{}{}", clear::All, cursor::Goto(1, 1)); // why the hell is it one-based
     }
