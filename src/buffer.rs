@@ -1,5 +1,6 @@
 use std::fmt;
 use std::mem;
+use termion::{clear, cursor};
 
 pub struct TerminalSize {
     pub x: u16,
@@ -37,7 +38,7 @@ impl Buffer {
     }
 
     pub fn set_line(&mut self, index: u16, line: &String) {
-        if !self.check_height_range(index) {
+        if !self.check_height_range(index) && !self.check_width_range(line.len() as u16) {
             panic!("Trying to reach for line out of reach");
         }
         self.replace(index as usize, line);
@@ -48,6 +49,10 @@ impl Buffer {
         for _ in 0..self.size.y {
             self.lines.push(String::new());
         }
+    }
+
+    fn clear_display(&self) {
+        println!("{}{}", clear::All, cursor::Goto(1, 1)); // why the hell is it one-based
     }
 
     fn replace(&mut self, index: usize, line: &String) -> String {
