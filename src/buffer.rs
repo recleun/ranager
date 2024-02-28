@@ -20,6 +20,7 @@ pub struct Buffer {
 
 impl Buffer {
     pub fn new(size: TerminalSize) -> Self {
+        println!("{}", cursor::Hide);
         let mut lines: Vec<String> = Vec::new();
         for _ in 0..size.y {
             lines.push(String::new());
