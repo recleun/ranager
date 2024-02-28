@@ -1,16 +1,7 @@
-use std::fmt;
 use termion::terminal_size;
+use buffer::{Buffer, TerminalSize};
 
-struct TerminalSize {
-    x: u16,
-    y: u16,
-}
-
-impl fmt::Display for TerminalSize {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}, {}", self.x, self.y)
-    }
-}
+pub mod buffer;
 
 fn get_terminal_size() -> TerminalSize {
     let (x, y) = terminal_size().expect("Failed to get terminal size");
@@ -21,5 +12,6 @@ fn get_terminal_size() -> TerminalSize {
 }
 
 fn main() {
-    println!("Width, Height: {}", get_terminal_size());
+    let buffer = Buffer::new(get_terminal_size());
+    println!("Width, Height: {}", buffer.size);
 }
