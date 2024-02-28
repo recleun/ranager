@@ -30,14 +30,14 @@ impl Buffer {
     }
 
     pub fn get_line(&self, index: u16) -> String {
-        if index > self.size.y {
-            panic!("Trying to reach for line out of reach")
-        };
+        if !self.check_height_range(index) {
+            panic!("Trying to reach for line out of reach");
+        }
         self.lines[index as usize].clone()
     }
 
     pub fn set_line(&mut self, index: u16, line: &String) {
-        if index > self.size.y {
+        if !self.check_height_range(index) {
             panic!("Trying to reach for line out of reach");
         }
         self.replace(index as usize, line);
@@ -45,5 +45,13 @@ impl Buffer {
 
     fn replace(&mut self, index: usize, line: &String) -> String {
         mem::replace(&mut self.lines[index], line.to_string())
+    }
+
+    fn check_height_range(&self, index: u16) -> bool {
+        index < self.size.y
+    }
+
+    fn check_width_range(&self, index: u16) -> bool {
+        index < self.size.x
     }
 }
