@@ -43,6 +43,13 @@ impl Buffer {
         self.replace(index as usize, line);
     }
 
+    pub fn clear(&mut self) {
+        self.lines.clear();
+        for _ in 0..self.size.y {
+            self.lines.push(String::new());
+        }
+    }
+
     fn replace(&mut self, index: usize, line: &String) -> String {
         mem::replace(&mut self.lines[index], line.to_string())
     }
