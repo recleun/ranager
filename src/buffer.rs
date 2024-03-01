@@ -58,10 +58,10 @@ impl Buffer {
                     self.replace(index as usize, line);
                 }
                 LineAlignment::Center => {
-                    todo!("call align_center function and pass output to replace")
+                    self.replace(index as usize, &self.align_center(line));
                 }
                 LineAlignment::Right => {
-                    todo!("call align_right function and pass output to replace")
+                    self.replace(index as usize, &self.align_right(line));
                 }
             }
         }
@@ -98,4 +98,25 @@ impl Buffer {
     fn check_width_range(&self, index: u16) -> bool {
         index < self.size.x
     }
+
+    fn align_center(&self, string: &String) -> String {
+        let mut result = String::new();
+        let space_count = (self.size.x - string.len() as u16) / 2;
+        for _ in 0..space_count {
+            result.push(' ');
+        }
+        result.push_str(string);
+        result
+    }
+
+    fn align_right(&self, string: &String) -> String {
+        let mut result = String::new();
+        let space_count = self.size.x - string.len() as u16;
+        for _ in 0..space_count {
+            result.push(' ');
+        }
+        result.push_str(string);
+        result
+    }
+    
 }
