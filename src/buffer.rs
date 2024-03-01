@@ -19,6 +19,16 @@ pub struct Buffer {
     lines: Vec<String>,
 }
 
+pub struct LineOptions {
+    pub alignment: LineAlignment,
+}
+
+pub enum LineAlignment {
+    Left,
+    Center,
+    Right,
+}
+
 impl Buffer {
     pub fn new(size: TerminalSize) -> Self {
         let mut lines: Vec<String> = Vec::new();
@@ -38,11 +48,23 @@ impl Buffer {
         self.lines[index as usize].clone()
     }
 
-    pub fn set_line(&mut self, index: u16, line: &String) {
+    pub fn set_line(&mut self, index: u16, line: &String, options: Option<LineOptions>) {
         if !self.check_height_range(index) && !self.check_width_range(line.len() as u16) {
             panic!("Trying to reach for line out of reach");
         }
-        self.replace(index as usize, line);
+        if let Some(_options) = options {
+            match _options.alignment {
+                LineAlignment::Left => {
+                    self.replace(index as usize, line);
+                }
+                LineAlignment::Center => {
+                    todo!("call align_center function and pass output to replace")
+                }
+                LineAlignment::Right => {
+                    todo!("call align_right function and pass output to replace")
+                }
+            }
+        }
     }
 
     pub fn clear(&mut self) {
