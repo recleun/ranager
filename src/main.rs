@@ -1,5 +1,5 @@
 use termion::{cursor, raw::IntoRawMode, screen::IntoAlternateScreen, terminal_size};
-use buffer::{Buffer, TerminalSize};
+use buffer::{Buffer, TerminalSize, LineOptions, LineAlignment};
 use std::io::{stdin, stdout, Read, Write};
 
 pub mod buffer;
@@ -12,6 +12,10 @@ fn get_terminal_size() -> TerminalSize {
     }
 }
 
+const DEFAULT_LINE: LineOptions = LineOptions {
+    alignment: LineAlignment::Left,
+};
+
 fn main() {
 
     let stdin = stdin().lock();
@@ -22,10 +26,10 @@ fn main() {
 
     screen.flush().unwrap();
 
-    buffer.set_line(0, &String::from("1 - Start\n"));
-    buffer.set_line(1, &String::from("2 - Help\n"));
-    buffer.set_line(2, &String::from("3 - Options\n"));
-    buffer.set_line(3, &String::from("0 - Exit\n"));
+    buffer.set_line(0, &String::from("1 - Start\n"), Some(DEFAULT_LINE));
+    buffer.set_line(1, &String::from("2 - Help\n"), Some(DEFAULT_LINE));
+    buffer.set_line(2, &String::from("3 - Options\n"), Some(DEFAULT_LINE));
+    buffer.set_line(3, &String::from("0 - Exit\n"), Some(DEFAULT_LINE));
 
     buffer.update_display(&mut screen);
 
@@ -36,17 +40,17 @@ fn main() {
             b'0' => break,
             b'1' => {
                 buffer.clear();
-                buffer.set_line(0, &"Welcome to the start menu.".to_string());
+                buffer.set_line(0, &"Welcome to the start menu.".to_string(), Some(DEFAULT_LINE));
                 buffer.update_display(&mut screen);
             },
             b'2' => {
                 buffer.clear();
-                buffer.set_line(0, &"Welcome to the help menu.".to_string());
+                buffer.set_line(0, &"Welcome to the help menu.".to_string(), Some(DEFAULT_LINE));
                 buffer.update_display(&mut screen);
             },
             b'3' => {
                 buffer.clear();
-                buffer.set_line(0, &"Welcome to the options menu.".to_string());
+                buffer.set_line(0, &"Welcome to the options menu.".to_string(), Some(DEFAULT_LINE));
                 buffer.update_display(&mut screen);
             },
             _ => {}
