@@ -1,6 +1,7 @@
 use std::fmt;
 use std::mem;
 use termion::{clear, cursor};
+use std::io::Write;
 
 pub struct TerminalSize {
     pub x: u16,
@@ -51,10 +52,12 @@ impl Buffer {
         }
     }
 
-    pub fn update_display(&self) {
+    pub fn update_display<W: Write>(&self, stdout: &mut W) {
         self.clear_display();
+        let mut count = 1;
         for line in &self.lines {
-            println!("{}", line);
+            write!(stdout, "{}{}", cursor::Goto(1, count), line).unwrap();
+            count += 1;
         }
     }
 
