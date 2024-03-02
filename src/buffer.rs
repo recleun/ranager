@@ -3,9 +3,19 @@ use std::mem;
 use termion::{clear, cursor};
 use std::io::Write;
 
+#[derive(Copy)]
 pub struct TerminalSize {
     pub x: u16,
     pub y: u16,
+}
+
+impl Clone for TerminalSize {
+    fn clone(&self) -> Self {
+        TerminalSize {
+            x: self.x,
+            y: self.y,
+        }
+    }
 }
 
 impl fmt::Display for TerminalSize {
