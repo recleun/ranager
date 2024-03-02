@@ -18,9 +18,11 @@ const DEFAULT_LINE: LineOptions = LineOptions {
 
 fn main() {
 
+    let terminal_size = get_terminal_size();
+
     let stdin = stdin().lock();
     let mut screen = stdout().into_raw_mode().unwrap().into_alternate_screen().unwrap();
-    let mut buffer = Buffer::new(get_terminal_size());
+    let mut buffer = Buffer::new(terminal_size);
 
     write!(screen, "{}", cursor::Hide).unwrap();
 
